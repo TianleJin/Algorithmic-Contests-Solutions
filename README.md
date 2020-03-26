@@ -1,2 +1,2 @@
-# Google-Kickstart
-google kickstart solutions
+# Coding Contests
+My solutions
