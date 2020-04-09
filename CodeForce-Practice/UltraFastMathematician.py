@@ -1,0 +1,1 @@
+print(''.join('0' if ch1 == ch2 else '1' for ch1, ch2 in zip(input().strip(), input().strip())))
