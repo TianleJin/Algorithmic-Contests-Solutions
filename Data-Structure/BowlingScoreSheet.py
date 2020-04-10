@@ -4,7 +4,6 @@ class BowlingScoreSheet:
         self.bowls = 0
         self.IsStrike = False
         self.IsSpare = False
-        
         self.score = 0
         self.frameScore = [0] * 10
 
@@ -41,14 +40,15 @@ class BowlingScoreSheet:
             self.IsSpare = True
         self.bowls += 1
 
-    def get_score(self, frame):
-        return self.frameScore[frame - 1], self.score
+    def get_frame_score(self, frame):
+        return self.frameScore[frame - 1]
+    
+    def get_score(self):
+        return self.score
+
 
 if __name__ == "__main__":
     B = BowlingScoreSheet()
     score = [10, 10, 10, 10, 9, 1, 10]
-    print(sum(score))
     for idx, s in enumerate(score):
         B.record(s)
-
-print(B.frameScore)

@@ -119,12 +119,3 @@ class BinarySearchTree:
             node.key, node.val = tmp_key, tmp_val
 
         return True
-
-
-if __name__ == "__main__":
-    bst = BinarySearchTree()
-    for k, v in zip(range(9), 'abcdefghi'):
-        bst[k] = v
-    del bst[0]
-    del bst[3]
-    bst.traverse()
