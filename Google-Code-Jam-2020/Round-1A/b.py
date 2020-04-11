@@ -13,33 +13,31 @@ iintl = lambda: list(map(int, input().strip().split()))
 
 
 def solve(N):
-    print(1, 1)
-    if N == 1:
-        return
+    rows = min(30, N)
+    N -= rows
+    use = [0] * rows
+    for row in range(rows - 1, -1, -1):
+        if (N >= (1 << row) - 1):
+            use[row] = 1
+            N -= (1 << row) - 1
+    rows += N
+    use += [0] * N
 
-    print(2, 1)
-    if N == 2:
-        return 
-
-    if N == 3:
-        print(2, 2)
-        return
-
-    N -= 2
-    j = 3
-    val = 2
-
-    while N >= val:
-        print(j, 2)
-        N -= val
-        val += 1
-        j += 1
-    
-    j -= 1
-    while N > 0:
-        print(j, 1)
-        N -= 1
-        j += 1
+    side = 0
+    for row in range(rows):
+        if use[row]:
+            if side == 1:
+                for col in range(row + 1):
+                    print(row + 1, col + 1)
+            else:
+                for col in range(row, -1, -1):
+                    print(row + 1, col + 1)
+            side ^= 1
+        else:
+            if side == 1:
+                print(row + 1, 1)
+            else:
+                print(row + 1, row + 1)
 
 
 if __name__ == "__main__":
