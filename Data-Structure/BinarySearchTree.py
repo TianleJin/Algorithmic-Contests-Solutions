@@ -55,7 +55,6 @@ class BinarySearchTree:
         return search(self.root)
     
     def __delitem__(self, key):
-        targets = []
 
         def search(par, root):
             if not root:
@@ -76,6 +75,8 @@ class BinarySearchTree:
                 curr = curr.left
             return curr
         
+        targets = []
+
         # node is not in tree
         if not search(None, self.root):
             raise KeyError
@@ -85,7 +86,6 @@ class BinarySearchTree:
 
         # leaf node
         if node.is_leaf():
-            print('leaf')
             if parent is None:
                 self.root = None
             elif parent.left is node:
@@ -95,7 +95,6 @@ class BinarySearchTree:
             
         # single child
         elif node.left is None or node.right is None:
-            print('single')
             if node.left:
                 child = node.left
                 node.left = None
@@ -112,7 +111,6 @@ class BinarySearchTree:
         
         # two children
         else:
-            print('double')
             successor = find_successor(node)
             tmp_key, tmp_val = successor.key, successor.val
             self.__delitem__(successor.key)
