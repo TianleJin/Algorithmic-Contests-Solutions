@@ -35,12 +35,4 @@ class BinaryIndexedTree:
             idx += idx & (-idx)
 
     def check(self, idx):
-        return 0 <= idx < self.size 
-
-
-if __name__ == '__main__':
-    bit = BinaryIndexedTree([0] * 16)
-    print(bit.tree)
-    bit.update(5, 9)
-    print(bit.tree)
-    print(bit.query(1, 10))
+        return 0 <= idx < self.size

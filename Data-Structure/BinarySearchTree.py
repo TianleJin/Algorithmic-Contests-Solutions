@@ -16,8 +16,8 @@ class BinarySearchTree:
     def traverse(self):
         def dfs(root):
             if root:
-                print(root.key, root.val)
                 dfs(root.left)
+                print(root.key, root.val)
                 dfs(root.right)
         dfs(self.root)
     
@@ -36,84 +36,48 @@ class BinarySearchTree:
     def __setitem__(self, key, val):
         if not self.root:
             self.root = TreeNode(key, val)
-            return True
+            return
 
         def search(root):
-            if not root:
-                return False
-            elif root.key == key:
+            if root.key == key:
                 root.val = val
-                return True
             elif root.key > key:
-                if not search(root.left):
+                if not root.left:
                     root.left = TreeNode(key, val)
-                return True
+                else:
+                    search(root.left)
             else:
-                if not search(root.right):
+                if not root.right:
                     root.right = TreeNode(key, val)
-                return True
-        return search(self.root)
+                else:
+                    search(root.right)
+        search(self.root)
     
     def __delitem__(self, key):
-
-        def search(par, root):
-            if not root:
-                return False 
-            elif root.key == key:
-                print('found')
-                targets.append(root)
-                targets.append(par)
-                return True
-            elif root.key > key:
-                return search(root, root.left)
-            else:
-                return search(root, root.right)
-
-        def find_successor(node):
-            curr = node.right
+        def successor(root):
+            curr = root.right
             while curr.left:
                 curr = curr.left
             return curr
-        
-        targets = []
-
-        # node is not in tree
-        if not search(None, self.root):
-            raise KeyError
-        
-        node = targets[0]
-        parent = targets[1]
-
-        # leaf node
-        if node.is_leaf():
-            if parent is None:
-                self.root = None
-            elif parent.left is node:
-                parent.left = None
-            else:
-                parent.right = None
             
-        # single child
-        elif node.left is None or node.right is None:
-            if node.left:
-                child = node.left
-                node.left = None
+        def search(root, key):
+            if root is None:
+                return root
+            elif key < root.key:
+                root.left = search(root.left, key)
+            elif key > root.key:
+                root.right = search(root.right, key)
             else:
-                child = node.right
-                node.right = None
-
-            if parent is None:
-                self.root = child
-            elif parent.left is node:
-                parent.left = child
-            else:
-                parent.right = child
-        
-        # two children
-        else:
-            successor = find_successor(node)
-            tmp_key, tmp_val = successor.key, successor.val
-            self.__delitem__(successor.key)
-            node.key, node.val = tmp_key, tmp_val
-
-        return True
+                if root.left is None:
+                    temp = root.right
+                    root = None
+                    return temp
+                if root.right is None:
+                    temp = root.left
+                    root = None
+                    return temp
+                temp = successor(root)
+                root.key, root.val = temp.key, temp.val
+                root.right = search(root.right, temp.key)
+            return root
+        self.root = search(self.root, key)
