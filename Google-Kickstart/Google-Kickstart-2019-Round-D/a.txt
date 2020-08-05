@@ -1,0 +1,80 @@
+#include <iostream>
+#include <cstdlib>
+#include <algorithm>
+#include <vector>
+#include <array>
+#include <map>
+#include <set>
+#include <string>
+#include <deque>
+#include <queue>
+#include <unordered_map>
+#include <assert.h>
+using namespace std;
+typedef long long ll;
+#define pi pair<int, int>
+#define pii pair<pi, pi>
+
+const int mxn = 1e5 + 10;
+int P[mxn];
+int A[mxn];
+set<int> S;
+
+int parity(int a) {
+	int p = 0;
+	while (a) {
+		p ^= a % 2;
+		a >>= 1;
+	}
+	return p;
+}
+
+int main() {
+	int T, N, Q;
+	cin >> T;
+	for (int tt = 1; tt <= T; tt++) {
+		S.clear();
+
+		cin >> N >> Q;
+		int a, p;
+
+		// 0: even set bits
+		for (int i = 0; i < N; i++) {
+			cin >> a;
+			p = parity(a);
+			assert(p == 1 || p == 0);
+			if (p) {
+				S.insert(i);
+			}
+		}
+
+		int idx, val;
+		for (int i = 0; i < Q; i++) {
+			cin >> idx >> val;
+			p = parity(val);
+			assert(p == 1 || p == 0);
+			if (p == 1 && S.find(idx) == S.end()) {
+				S.insert(idx);
+			}
+			else if (p == 0 && S.find(idx) != S.end()) {
+				S.erase(S.find(idx));
+			}
+
+			if (S.size() % 2 == 0) {
+				A[i] = N;
+			}
+			else {
+				auto it1 = S.begin();
+				auto it2 = S.end();
+				it2--;
+				A[i] = max(N - (*it1) - 1, (*it2));
+			}
+		}
+
+		cout << "Case #" << tt << ": ";
+		for (int i = 0; i < Q; i++) {
+			cout << A[i] << ' ';
+		}
+		cout << '\n';
+	}
+}
