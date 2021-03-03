@@ -1,2 +1,2 @@
 # Coding Contests
-My solutions
+My solutions for various different algorithmic competitions.
