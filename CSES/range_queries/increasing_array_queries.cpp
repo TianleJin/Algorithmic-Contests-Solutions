@@ -38,6 +38,7 @@ const int dy4[] = { 0, -1, 0, 1 };
 const int dx8[] = { -1, -1, -1, 0, 0, 1, 1, 1 };
 const int dy8[] = { -1, 0, 1, -1, 1, -1, 0, 1 };
 
+// https://cses.fi/problemset/task/2416
 // fenwick tree + monotone deque + binary search + sort queries by left boundary
 const int mxn = 200002;
 const ll inf = 1e18;

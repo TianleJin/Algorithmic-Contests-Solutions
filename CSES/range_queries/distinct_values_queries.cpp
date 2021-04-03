@@ -39,6 +39,7 @@ const int dy4[] = { 0, -1, 0, 1 };
 const int dx8[] = { -1, -1, -1, 0, 0, 1, 1, 1 };
 const int dy8[] = { -1, 0, 1, -1, 1, -1, 0, 1 };
 
+// https://cses.fi/problemset/task/1734
 // fenwick tree + sort queries by right boundary
 const int mxn = 2e5;
 int n, q;

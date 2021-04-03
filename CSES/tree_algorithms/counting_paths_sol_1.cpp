@@ -33,42 +33,56 @@ const int dy4[] = { 0, -1, 0, 1 };
 const int dx8[] = { -1, -1, -1, 0, 0, 1, 1, 1 };
 const int dy8[] = { -1, 0, 1, -1, 1, -1, 0, 1 };
 
-// lca query
+// https://cses.fi/problemset/task/1136
+// eulerian tour + rmq lca query
 const int mxn = 200005;
-const int mxl = 22;
 int n, m;
 int timer = 0;
 vector<int> graph[mxn];
-int par[mxn][mxl], depth[mxn], st[mxn], en[mxn];
+int ans[mxn], par[mxn], start[mxn], depth[mxn], range[2 * mxn], seg[8 * mxn];
 
-int isAncestor(int node1, int node2) {
-	return st[node1] <= st[node2] && en[node2] <= en[node1];
-}
-
-int query(int node1, int node2) {
-	if (isAncestor(node1, node2)) return node1;
-	if (isAncestor(node2, node1)) return node2;
-	for (int i = mxl - 1; i >= 0; i--) {
-		if (!isAncestor(par[node1][i], node2)) {
-			node1 = par[node1][i];
-		}
+void build(int idx = 1, int l = 0, int r = timer) {
+	if (r - l < 2) {
+		seg[idx] = range[l];
+		return;
 	}
-	return par[node1][0];
+	int mid = (l + r) / 2;
+	build(2 * idx, l, mid);
+	build(2 * idx + 1, mid, r);
+	seg[idx] = depth[seg[2 * idx]] < depth[seg[2 * idx + 1]] ? seg[2 * idx] : seg[2 * idx + 1];
 }
 
-void dfs1(int node, int parent = 1, int level = 1) {
-	st[node] = timer++;
+int query(int x, int y, int idx = 1, int l = 0, int r = timer) {
+	if (x >= r || y <= l) return n + 1;
+	if (x <= l && r <= y) {
+		return seg[idx];
+	}
+	int mid = (l + r) / 2;
+	int ans1 = query(x, y, 2 * idx, l, mid);
+	int ans2 = query(x, y, 2 * idx + 1, mid, r);
+	return depth[ans1] < depth[ans2] ? ans1 : ans2;
+}
+
+void dfs1(int node, int parent = 0, int level = 1) {
+	par[node] = parent;
 	depth[node] = level;
-	par[node][0] = parent;
-	for (int i = 1; i < mxl; i++) {
-		par[node][i] = par[par[node][i - 1]][i - 1];
-	}
+	start[node] = timer;
+	range[timer++] = node;
 	for (int i : graph[node]) {
 		if (i != parent) {
 			dfs1(i, node, level + 1);
+			range[timer++] = node;
 		}
 	}
-	en[node] = timer++;
+}
+
+void dfs2(int node, int parent = 0) {
+	for (int i : graph[node]) {
+		if (i != parent) {
+			dfs2(i, node);
+			ans[node] += ans[i];
+		}
+	}
 }
 
 void solve() {
@@ -81,6 +95,10 @@ void solve() {
 	}
 
 	dfs1(1);
+
+	depth[n + 1] = n + 1;
+
+	build();
 
 	/*
 	for (int i = 0; i < timer; i++) {
@@ -95,17 +113,30 @@ void solve() {
 	for (int i = 0; i < m; i++) {
 		int a, b;
 		cin >> a >> b;
-		int lca = query(a, b);
+		int lca = query(min(start[a], start[b]), max(start[a], start[b]) + 1);
+		
 		// cout << a << ' ' << b << ' ' << lca << endl;
+		
 		if (lca == a) {
-			cout << depth[b] - depth[a] << endl;
+			++ans[b];
+			--ans[par[a]];
 		}
 		else if (lca == b) {
-			cout << depth[a] - depth[b] << endl;
+			++ans[a];
+			--ans[par[b]];
 		}
 		else {
-			cout << depth[a] + depth[b] - 2 * depth[lca] << endl;
+			++ans[a];
+			++ans[b];
+			--ans[lca];
+			--ans[par[lca]];
 		}
+	}
+
+	dfs2(1);
+
+	for (int i = 1; i <= n; i++) {
+		cout << ans[i] << endl;
 	}
 }
 

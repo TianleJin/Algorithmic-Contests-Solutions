@@ -32,6 +32,7 @@ const int dy4[] = { 0, -1, 0, 1 };
 const int dx8[] = { -1, -1, -1, 0, 0, 1, 1, 1 };
 const int dy8[] = { -1, 0, 1, -1, 1, -1, 0, 1 };
 
+// https://cses.fi/problemset/task/1749
 // segment tree + binary search
 const int mxn = 2e5;
 int n, a[mxn], bit[mxn + 1];

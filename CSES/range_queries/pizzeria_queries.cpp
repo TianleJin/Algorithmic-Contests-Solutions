@@ -38,6 +38,7 @@ const int dy4[] = { 0, -1, 0, 1 };
 const int dx8[] = { -1, -1, -1, 0, 0, 1, 1, 1 };
 const int dy8[] = { -1, 0, 1, -1, 1, -1, 0, 1 };
 
+// https://cses.fi/problemset/task/2206
 // two segment tree with arithmetic default values
 const int mxn = 2e5;
 const int inf = 1e9;

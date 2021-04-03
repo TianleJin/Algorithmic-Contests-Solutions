@@ -38,6 +38,7 @@ const int dy4[] = { 0, -1, 0, 1 };
 const int dx8[] = { -1, -1, -1, 0, 0, 1, 1, 1 };
 const int dy8[] = { -1, 0, 1, -1, 1, -1, 0, 1 };
 
+// https://cses.fi/problemset/task/1739
 // 2D segment tree
 const int mxn = 1000;
 int n, q;
