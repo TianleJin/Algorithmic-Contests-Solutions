@@ -35,7 +35,7 @@ const int dx8[] = { -1, -1, -1, 0, 0, 1, 1, 1 };
 const int dy8[] = { -1, 0, 1, -1, 1, -1, 0, 1 };
 
 // https://cses.fi/problemset/task/1693/
-// eulerian path
+// eulerian trail
 const int mxn = 100001;
 int n, m, in[mxn], out[mxn];
 stack<int> graph[mxn];

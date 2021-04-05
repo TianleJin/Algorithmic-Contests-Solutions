@@ -34,52 +34,44 @@ const int dy4[] = { 0, -1, 0, 1 };
 const int dx8[] = { -1, -1, -1, 0, 0, 1, 1, 1 };
 const int dy8[] = { -1, 0, 1, -1, 1, -1, 0, 1 };
 
-// https://cses.fi/problemset/task/1691/
-// eulerian trail
-const int mxn = 100001;
-int n, m, ind[mxn];
-vector<int> graph[mxn], path;
-unordered_set<int> vis1[mxn];
-bool vis2[mxn];
+// https://cses.fi/problemset/task/1690/
+// travelling salesperson
+const int mxn = 20;
+const int mod = 1e9 + 7;
+int l, n, m;
+int dp[1 << mxn][mxn];
+vector<int> graph[mxn];
 
-void dfs(int node) {
-	vis2[node] = true;
-	while (ind[node] < graph[node].size()) {
-		int u = graph[node][ind[node]++];
-		if (vis1[u].find(node) == vis1[u].end()) {
-			vis1[node].insert(u);
-			dfs(u);
+int helper(int msk, int last) {
+	if (dp[msk][last] != -1) return dp[msk][last];
+	if (msk == 1) return 1;
+
+	dp[msk][last] = 0;
+	for (int i : graph[last]) {
+		if (i != last && msk >> i & 1) {
+			dp[msk][last] = (0LL + dp[msk][last] + helper(msk ^ 1 << last, i)) % mod;
 		}
 	}
-	path.push_back(node);
+	return dp[msk][last];
 }
 
 int main() {
 	ios::sync_with_stdio(false);
 	cin.tie(0);
-	cin >> n >> m;
+	
+	cin >> n >> m; l = 1 << n;
+
 	for (int i = 0; i < m; i++) {
 		int u, v;
-		cin >> u >> v;
-		graph[u].push_back(v);
+		cin >> u >> v; --u; --v;
 		graph[v].push_back(u);
 	}
 
-	for (int u = 1; u <= n; u++) {
-		if (graph[u].size() % 2) {
-			cout << "IMPOSSIBLE" << endl; return 0;
+	for (int i = 0; i < l; i++) {
+		for (int j = 0; j < n; j++) {
+			dp[i][j] = -1;
 		}
 	}
 
-	dfs(1);
-
-	for (int u = 1; u <= n; u++) {
-		if (!vis2[u] && graph[u].size()) {
-			cout << "IMPOSSIBLE" << endl; return 0;
-		}
-	}
-
-	for (int u : path) {
-		cout << u << ' ';
-	}
+	cout << helper(l - 1, n - 1) << endl;
 }

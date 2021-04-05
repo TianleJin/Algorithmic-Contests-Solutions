@@ -34,52 +34,48 @@ const int dy4[] = { 0, -1, 0, 1 };
 const int dx8[] = { -1, -1, -1, 0, 0, 1, 1, 1 };
 const int dy8[] = { -1, 0, 1, -1, 1, -1, 0, 1 };
 
-// https://cses.fi/problemset/task/1691/
+// https://cses.fi/problemset/task/1692
 // eulerian trail
 const int mxn = 100001;
-int n, m, ind[mxn];
-vector<int> graph[mxn], path;
-unordered_set<int> vis1[mxn];
-bool vis2[mxn];
+int n, l;
+bool vis[mxn];
+stack<int> graph[mxn];
+vector<int> ans;
 
 void dfs(int node) {
-	vis2[node] = true;
-	while (ind[node] < graph[node].size()) {
-		int u = graph[node][ind[node]++];
-		if (vis1[u].find(node) == vis1[u].end()) {
-			vis1[node].insert(u);
-			dfs(u);
-		}
+	if (vis[node]) return;
+	vis[node] = true;
+	ans.push_back(node);
+	while (!graph[node].empty()) {
+		int u = graph[node].top(); graph[node].pop();
+		dfs(u);
 	}
-	path.push_back(node);
 }
 
 int main() {
 	ios::sync_with_stdio(false);
 	cin.tie(0);
-	cin >> n >> m;
-	for (int i = 0; i < m; i++) {
-		int u, v;
-		cin >> u >> v;
-		graph[u].push_back(v);
-		graph[v].push_back(u);
-	}
+	
+	cin >> n; l = 1 << n;
 
-	for (int u = 1; u <= n; u++) {
-		if (graph[u].size() % 2) {
-			cout << "IMPOSSIBLE" << endl; return 0;
+	for (int i = 0; i < l; i++) {
+		int x = (i << 1) & (l - 1);
+		int y = x | 1;
+		if (x != i) {
+			graph[i].push(x);
+		}
+		if (y != i) {
+			graph[i].push(y);
 		}
 	}
 
-	dfs(1);
+	dfs(0);
 
-	for (int u = 1; u <= n; u++) {
-		if (!vis2[u] && graph[u].size()) {
-			cout << "IMPOSSIBLE" << endl; return 0;
-		}
+	for (int i = n - 1; i >= 0; i--) {
+		cout << (ans[0] >> i & 1);
 	}
 
-	for (int u : path) {
-		cout << u << ' ';
+	for (int i = 1; i < ans.size(); i++) {
+		cout << (ans[i] & 1);
 	}
 }
