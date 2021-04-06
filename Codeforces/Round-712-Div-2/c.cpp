@@ -37,7 +37,6 @@ const int dxknight[] = { -1, -1, -2, -2, 1, 1, 2, 2 };
 const int dyknight[] = { 2, -2, 1, -1, 2, -2, 1, -1 };
 
 const int mxn = 200005;
-int ones[mxn];
 int main() {
 	ios::sync_with_stdio(false);
 	cin.tie(0);
@@ -49,65 +48,55 @@ int main() {
 		string s;
 		cin >> s;
 
-		for (int i = n - 1; i >= 0; --i) {
-			ones[i] += ones[i + 1];
+		int ones = 0;
+		for (int i = 0; i < n; i++) {
 			if (s[i] == '1') {
-				ones[i]++;
+				ones++;
 			}
 		}
 
-		bool ok = true;
-		int c1 = 0, c2 = 0;
-		vector<char> ans1(n), ans2(n);
-		for (int i = 0; i < n; i++) {
-			if (s[i] == '0') {
-				if (c1 < c2) {
-					c1++;
-					c2--;
-					ans1[i] = '(';
-					ans2[i] = ')';
-				}
-				else {
-					c1--;
-					c2++;
-					ans1[i] = ')';
-					ans2[i] = '(';
-				}
-			}
-			else {
-				if (c1 + c2 + 2 > 2 * ones[i + 1]) {
-					c1--;
-					c2--;
-					ans1[i] = ')';
-					ans2[i] = ')';
-				}
-				else {
-					c1++;
-					c2++;
-					ans1[i] = '(';
-					ans2[i] = '(';
-				}
-			}
-			if (c1 < 0 || c2 < 0) {
-				ok = false;
-			}
-		}
-		if (c1 || c2) {
-			ok = false;
-		}
-		if (!ok) {
+		if (ones % 2 || s[0] != '1' || s[n - 1] != '1') {
 			cout << "NO" << endl;
+			continue;
 		}
-		else {
-			cout << "YES" << endl;
-			for (int i = 0; i < n; i++) {
-				cout << ans1[i];
+
+		vector<char> ans1(n), ans2(n);
+		for (int i = 0, c = 0; i < n; i++) {
+			if (s[i] == '1') {
+				c++;
+				if (c <= ones / 2) {
+					ans1[i] = '(';
+					ans2[i] = '(';
+				}
+				else {
+					ans1[i] = ')';
+					ans2[i] = ')';
+				}
 			}
-			cout << endl;
-			for (int i = 0; i < n; i++) {
-				cout << ans2[i];
-			}
-			cout << endl;
 		}
+
+		for (int i = 0, c = 0; i < n; i++) {
+			if (s[i] == '0') {
+				c++;
+				if (c % 2) {
+					ans1[i] = ')';
+					ans2[i] = '(';
+				}
+				else {
+					ans1[i] = '(';
+					ans2[i] = ')';
+				}
+			}
+		}
+
+		cout << "YES" << endl;
+		for (int i = 0; i < n; i++) {
+			cout << ans1[i];
+		}
+		cout << endl;
+		for (int i = 0; i < n; i++) {
+			cout << ans2[i];
+		}
+		cout << endl;
 	}
 }
