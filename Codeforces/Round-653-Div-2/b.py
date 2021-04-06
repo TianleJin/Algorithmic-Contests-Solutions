@@ -18,7 +18,7 @@ def solve():
     if two > three or n > 1:
         return -1
     
-    return three + three - two
+    return 2 * three - two
 
 
 if __name__ == '__main__':
