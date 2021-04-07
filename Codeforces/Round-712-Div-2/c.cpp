@@ -55,7 +55,7 @@ int main() {
 			}
 		}
 
-		if (ones % 2 || s[0] != '1' || s[n - 1] != '1') {
+		if (ones % 2 || s[0] == '0' || s[n - 1] == '0') {
 			cout << "NO" << endl;
 			continue;
 		}
