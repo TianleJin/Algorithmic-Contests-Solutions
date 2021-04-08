@@ -40,6 +40,8 @@ const int dy8[] = { -1, 0, 1, -1, 1, -1, 0, 1 };
 const int mxn = 20;
 const int mod = 1e9 + 7;
 
+ll a[mxn];
+
 ll exp(ll x, ll n) {
 	x = x % mod;
 	ll ans = 1;
@@ -47,13 +49,11 @@ ll exp(ll x, ll n) {
 		if (n & 1) {
 			ans = (ans * x) % mod;
 		}
-		ans = (ans * ans) % mod;
+		x = (x * x) % mod;
 		n >>= 1;
 	}
 	return ans;
 }
-
-ll a[mxn];
 
 int main() {
 	ios::sync_with_stdio(false);
