@@ -60,8 +60,8 @@ int main() {
 		cin >> u >> v >> c;
 		int fwd = 2 * i;
 		int rev = 2 * i + 1;
-		edges[fwd].u = u, edges[fwd].v = v, edges[fwd].cap = c, edges[fwd].rev = rev;
-		edges[rev].u = v, edges[rev].v = u, edges[rev].cap = 0, edges[rev].rev = fwd;
+		edges[fwd] = { u, v, c, rev };
+		edges[rev] = { v, u, 0, fwd };
 		graph[u].push_back(fwd);
 		graph[v].push_back(rev);
 	}
