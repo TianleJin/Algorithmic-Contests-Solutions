@@ -35,8 +35,8 @@ const int dx8[] = { -1, -1, -1, 0, 0, 1, 1, 1 };
 const int dy8[] = { -1, 0, 1, -1, 1, -1, 0, 1 };
 
 // https://cses.fi/problemset/task/2182/
+
 const ll mod = 1e9 + 7;
-const int mxn = 1e5;
 ll exp(ll x, ll n) {
 	if (n == 0) return 1;
 	if (n == 1) return x;
@@ -51,7 +51,8 @@ ll exp(ll x, ll n) {
 }
 
 ll geometric(ll x, ll n) {
-	return (exp(x, n + 1) + mod - 1) % mod * exp(x - 1, mod - 2) % mod;
+	ll y = exp(x, n + 1); --y;
+	return y * exp(x - 1, mod - 2) % mod;
 }
 
 int main() {
@@ -73,31 +74,11 @@ int main() {
 		sum = sum * geometric(A[i], B[i]) % mod;
 	}
 
-	bool f = false;
-	ll c = 1, p = 1;
+	ll cnt = 1;
 	for (int i = 0; i < n; i++) {
-		ll x = B[i] + 1;
-		if (x % 2 == 0) {
-			if (f) {
-				c = c * 2 % (mod - 1);
-			}
-			p = x / 2 * p % (mod - 1);
-			f = true;
-		}
-		else {
-			p = x * p % (mod - 1);
-		}
-	}
-
-	for (int i = 0; i < n; i++) {
-		ll y;
-		if (f) {
-			y = B[i] * p % (mod - 1) * c % (mod - 1);
-		}
-		else {
-			y = B[i] / 2 * p % (mod - 1) * c % (mod - 1);
-		}
-		product = product * exp(A[i], y) % mod;
+		ll x = exp(A[i], B[i] * (B[i] + 1) / 2);
+		product = exp(product, B[i] + 1) * exp(x, cnt) % mod;
+		cnt = cnt * (B[i] + 1) % (mod - 1);
 	}
 	cout << count << ' ' << sum << ' ' << product << endl;
 }
