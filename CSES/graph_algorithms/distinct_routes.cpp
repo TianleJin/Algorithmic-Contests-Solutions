@@ -68,7 +68,7 @@ int main() {
 	cin >> n >> m;
 	for (int i = 0; i < m; i++) {
 		int a, b;
-		cin >> a >> b;;
+		cin >> a >> b;
 		int fwd = 2 * i, bwd = 2 * i + 1;
 		edges[fwd] = { a, b, 1, bwd };
 		edges[bwd] = { b, a, 0, fwd };
