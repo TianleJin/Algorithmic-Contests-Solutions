@@ -9,12 +9,12 @@ typedef long long ll;
 typedef pair<int, int> pii;
 
 const int mxn = 2e5;
-int n, k;
+int n, k, k2;
 char ans[mxn];
 bool vis[26][26];
 
 bool dfs(int idx, int s) {
-	if (idx == k * k + 1) {
+	if (idx == k2 + 1) {
 		return true;
 	}
 
@@ -33,13 +33,13 @@ int main() {
 	ios::sync_with_stdio(false);
 	cin.tie(0);
 	cin >> n >> k;
+	k2 = k * k;
 
 	ans[0] = 'a';
 	dfs(1, 0);
 	
-	int l = k * k;
-	for (int i = l + 1; i < n; i++) {
-		ans[i] = ans[i - l];
+	for (int i = k2 + 1; i < n; i++) {
+		ans[i] = ans[i - k2];
 	}
 
 	for (int i = 0; i < n; i++) {
