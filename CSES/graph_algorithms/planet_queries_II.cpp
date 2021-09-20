@@ -1,42 +1,11 @@
 #include <iostream>
-#include <string>
 #include <vector>
 #include <algorithm>
-#include <sstream>
-#include <queue>
-#include <deque>
-#include <bitset>
-#include <iterator>
-#include <list>
-#include <stack>
-#include <map>
-#include <set>
-#include <unordered_map>
-#include <unordered_set>
-#include <functional>
-#include <numeric>
-#include <utility>
-#include <limits>
-#include <time.h>
-#include <math.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <assert.h>
-
 using namespace std;
-typedef long long ll;
-typedef pair<int, int> pii;
-
-const int dx4[] = { -1, 0, 1, 0 };
-const int dy4[] = { 0, -1, 0, 1 };
-const int dx8[] = { -1, -1, -1, 0, 0, 1, 1, 1 };
-const int dy8[] = { -1, 0, 1, -1, 1, -1, 0, 1 };
 
 // https://cses.fi/problemset/task/1160/
-// binary lifting + functional graphs
 const int mxn = 200001;
-const int mxl = 31;
+const int mxl = 21;
 int n, q, par[mxn][mxl], idx[mxn], sze[mxn], depth[mxn], comp[mxn], tmp[mxn];
 vector<int> adj[mxn], chd[mxn];
 bool isCycle[mxn];
@@ -78,7 +47,7 @@ void preprocess() {
 	for (int i = 1; i <= n; i++) {
 		dfs1(i);
 	}
-	
+
 	for (int i = 1; i < mxl; i++) {
 		for (int u = 1; u <= n; u++) {
 			par[u][i] = par[par[u][i - 1]][i - 1];
